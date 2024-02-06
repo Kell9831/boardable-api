@@ -11,5 +11,5 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.get("/" , (req,res) => {
-   res.json({test: "Hola mundo"});
+   res.json({test: "Hola a todos"});
 })
