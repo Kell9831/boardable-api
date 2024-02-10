@@ -5,7 +5,7 @@ export const cardSchema = z.object({
     required_error: "title es requerido.",
     invalid_type_error: "title debe ser un string.",
   }),
-  list_id: z.number().int().positive(),
+  list_id: z.number().int().positive().optional(),
 });
 
 export type CardParams = z.infer<typeof cardSchema>;

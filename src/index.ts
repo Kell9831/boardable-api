@@ -7,6 +7,7 @@ import cors from "cors";
 import { boardRouter } from "./routers/board-router";
 import { profileRouter } from "./routers/profile-router";
 import listsRouter from "./routers/list-router";
+import { cardsRouter } from "./routers/card-router";
 
 const app = express();
 const port = 5500;
@@ -27,5 +28,6 @@ app.use("/", userRouter);
 app.use("/me", profileRouter);
 app.use("/boards", boardRouter);
 app.use("/", listsRouter);
+app.use("/", cardsRouter);
 app.use(errorHandler);
 app.listen(port, () => console.log(`Escuchando al puerto ${port}`));
