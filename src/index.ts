@@ -4,8 +4,9 @@ import errorHandler from "./middlewares/error";
 import logRequest from "./middlewares/logRequest";
 import authRouter from "./routers/auth-router";
 import cors from "cors";
-import { boardRouter } from "./routers/board";
+import { boardRouter } from "./routers/board-router";
 import { profileRouter } from "./routers/profile-router";
+import listsRouter from "./routers/list-router";
 
 const app = express();
 const port = 5500;
@@ -25,5 +26,6 @@ app.use("/", authRouter);
 app.use("/", userRouter);
 app.use("/me", profileRouter);
 app.use("/boards", boardRouter);
+app.use("/", listsRouter);
 app.use(errorHandler);
 app.listen(port, () => console.log(`Escuchando al puerto ${port}`));
