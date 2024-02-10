@@ -1,8 +1,6 @@
 import express from "express";
 import {
   getAllUsers,
-  updateUser,
-  deleteUser,
   getUser,
 } from "../services/user-services";
 import { ApiError } from "../middlewares/error";
@@ -35,58 +33,5 @@ userRouter.get(
   }
 );
 
-userRouter.patch(
-  "/users/:id",
-  authenticateHandler,
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const { username, password,name, email } = req.body;
-      const updatedUser = await updateUser(
-        parseInt(id),
-        username,
-        password,
-        name,
-        email
-      );
-
-      if (updatedUser) {
-        const updatedData = {
-          id: updatedUser.id,
-          username: updatedUser.username,
-          name:updateUser.name,
-          email: updatedUser.email,
-        };
-
-        res.json({
-          ok: true,
-          message: "Usuario actualizado exitosamente",
-          data: updatedData,
-        });
-      } else {
-        res.status(404).json({
-          ok: false,
-          message: "Usuario no encontrado",
-        });
-      }
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-userRouter.delete(
-  "/users/:id",
-  authenticateHandler,
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      await deleteUser(parseInt(id));
-      res.json({ ok: true, message: "Usuario eliminado" });
-    } catch (error) {
-      next(error);
-    }
-  }
-);
 
 export default userRouter;

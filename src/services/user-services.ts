@@ -26,24 +26,6 @@ export async function createUser(data: UserParams): Promise<User> {
   return newUser;
 }
 
-export async function updateUser(
-  id: number,
-  username: string,
-  password: string,
-  name:string,
-  email: string,
-): Promise<User | undefined> {
-  const updatedUser = await userDB.updateUser(id, username, password,name,email);
-
-  if (!updatedUser) {
-    throw new ApiError("Usuario no encontrado", 404);
-  }
-  const costFactor = 10;
-  const hashedPassword = await bcrypt.hash(password, costFactor);
-  const updateUser = await userDB.updateUser(id,username, hashedPassword,name, email);
-  return updateUser;
-}
-
 
 export async function validateCredentials(
   credentials: UserParams
