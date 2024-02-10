@@ -27,7 +27,13 @@ export async function editBoard(data: BoardParams, boardId: string) {
     ).rows[0];
   }
   
-  export async function getAllBoard(): Promise<Board[]> {
-    return (await query("SELECT * FROM boards")).rows;
+  export async function getAllBoardsByUserId(userId: number): Promise<Board[]> {
+    return (
+      await query("SELECT * FROM boards WHERE userId = $1", [userId])
+    ).rows;
   }
-
+  
+  export async function deleteBoard(boardId: number): Promise<void> {
+    await query("DELETE FROM boards WHERE id = $1", [boardId]);
+  }
+  

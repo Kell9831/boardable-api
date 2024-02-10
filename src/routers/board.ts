@@ -1,25 +1,48 @@
 import express from "express";
 import { authenticateHandler } from "../middlewares/authenticate";
 import { validationHandler } from "../middlewares/validation";
-import { editBoard, getAllBoard, getBoardById, newBoard } from "../services/board-service";
+import { deleteBoard, editBoard, getBoardById, newBoard } from "../services/board-service";
 import { boardSchema , editBoardSchema } from "../models/board";
 import { ApiError } from "../middlewares/error";
+import { getAllBoardsByUserId } from "../data/board-data";
 
 export const boardRouter = express.Router();
 
-boardRouter.get(
-  "/",
-  authenticateHandler,
-  async (req, res, next) => {
-    const users = await getAllBoard();
+boardRouter.get("/", authenticateHandler, async (req, res, next) => {
+  try {
+    const userId = req.userId!; 
+    const boards = await getAllBoardsByUserId(userId);
 
     res.json({
       ok: true,
-      message: "Lista de tableros",
-      data: users,
+      message: "Lista de tableros del usuario",
+      data: boards,
     });
+  } catch (error) {
+    next(error);
   }
-);
+});
+
+boardRouter.get('/:id', async (req, res, next) => {
+  try {
+    const boardId = req.params.id;
+
+    // Obtener el tablero por su ID
+    const response = await getBoardById(boardId);
+    
+    // Verificar si se encontró el tablero
+    if (!response.rows || response.rows.length === 0) {
+      return res.status(404).json({ error: 'Board not found' });
+    }
+
+    // Extraer los datos del primer tablero encontrado
+    const board = response.rows[0];
+
+    res.status(200).json({ ok: true, data: board });
+  } catch (error) {
+    next(error);
+  }
+});
 
 boardRouter.post(
     "/",
@@ -66,3 +89,14 @@ boardRouter.post(
       }
     }
   );
+
+  boardRouter.delete("/:boardId", authenticateHandler, async (req, res, next) => {
+    try {
+      const boardId = req.params.boardId; // Obtener el boardId de los parámetros de la solicitud
+      await deleteBoard(boardId); // Llamar a la función deleteBoard con el boardId proporcionado
+      res.status(200).json({ ok: true });
+    } catch (error) {
+      next(error);
+    }
+  });
+  

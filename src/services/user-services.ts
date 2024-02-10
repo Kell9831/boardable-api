@@ -26,6 +26,34 @@ export async function createUser(data: UserParams): Promise<User> {
   return newUser;
 }
 
+export async function updateUser(
+  id: number,
+  username: string,
+  password: string,
+  name: string,
+  email: string
+): Promise<User | undefined> {
+  // Verificar si los nuevos valores de username, name y email ya existen en la base de datos
+  const existingUser = await userDB.getUserByUsernameOrEmail(username, email);
+  if (existingUser && existingUser.id !== id) {
+    throw new Error("El nombre de usuario o correo electrónico ya está en uso.");
+  }
+
+  // Hashear la contraseña
+  const costFactor = 10;
+  const hashedPassword = await bcrypt.hash(password, costFactor);
+
+  // Actualizar el usuario en la base de datos
+  const updatedUser = await userDB.updateUser(id, username, hashedPassword, name, email);
+
+  if (!updatedUser) {
+    throw new ApiError("Usuario no encontrado", 404);
+  }
+
+  return updatedUser;
+}
+
+
 
 export async function validateCredentials(
   credentials: UserParams

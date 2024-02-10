@@ -47,6 +47,12 @@ export async function updateUser(
   ).rows[0];
 }
 
+export async function getUserByUsernameOrEmail(username: string, email: string): Promise<User | undefined> {
+  const result = await query("SELECT * FROM users WHERE username = $1 OR email = $2", [username, email]);
+  return result.rows[0];
+}
+
+
 export async function deleteUser(id: number): Promise<void> {
   await query("DELETE FROM users WHERE id = $1", [id]);
 }
