@@ -9,8 +9,8 @@ export const boardSchema = z.object({
   color: z.string({
     invalid_type_error: "Color must be a string",
   }).refine((value) => /^#([0-9a-f]{6})$/i.test(value), {
-    message: "Color must be a valid hexadecimal color code (e.g., '#FFFFFF')",
-  }).default("#FFFFFF"),
+    message: "Color must be a valid hexadecimal color code (e.g., '#E2E8F0')",
+  }).default("#E2E8F0"),
   created_at: z
     .string({
       required_error: "CreatedAt es requerido.",

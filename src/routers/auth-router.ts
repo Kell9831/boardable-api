@@ -14,7 +14,7 @@ authRouter.post(
     try {
       const newUser = await createUser(req.body);
       const payload = { userId: newUser.id };
-    const token = jwt.sign(payload, jwtSecret, { expiresIn: "5m" });
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: "15m" });
       const newData = {
         id: newUser.id,
         username: newUser.username,
@@ -38,7 +38,7 @@ authRouter.post("/login", async (req, res, next) => {
   try {
     const user = await validateCredentials(req.body);
     const payload = { userId: user.id };
-    const token = jwt.sign(payload, jwtSecret, { expiresIn: "5m" });
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: "15m" });
 
     res.json({ ok: true, message: "Login exitoso", data: { token } });
   } catch (error) {
