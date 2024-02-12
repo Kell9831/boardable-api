@@ -3,10 +3,10 @@ import jwt from "jsonwebtoken";
 import { createUser, validateCredentials } from "../services/user-services";
 import { userSchema } from "../models/user";
 import { validationHandler } from "../middlewares/validation";
+import { jwtSecret } from "../utils/const-util";
 
 const authRouter = express.Router();
 
-const jwtSecret = "ultra-secret";
 authRouter.post(
   "/signup",
   validationHandler(userSchema),

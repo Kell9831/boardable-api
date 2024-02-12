@@ -33,11 +33,3 @@ export function filtering(
     return result.join(" , ");
   }
   
-  export function postFormat(object: Record<string, any>) {
-    let result = [];
-    for (let key in object) {
-      result.push(`'${object[key]}'`);
-    }
-    return result.join(" ,");
-  }
-  

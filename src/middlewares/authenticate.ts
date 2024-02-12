@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { ApiError } from "./error";
+import { jwtSecret } from "../utils/const-util";
  
 // Extendemos el objeto Request para incluir la propiedad user
 declare global {
@@ -11,8 +12,6 @@ declare global {
     }
   }
 }
- 
-const jwtSecret = "ultra-secret";
  
 export function authenticateHandler(
   req: Request,

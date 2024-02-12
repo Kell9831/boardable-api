@@ -2,6 +2,7 @@ import { User,UserParams } from "../models/user";
 import bcrypt from "bcrypt";
 import * as userDB from "../data/user-data";
 import { ApiError } from "../middlewares/error";
+import { costFactor } from "../utils/const-util";
 
 export async function getAllUsers(): Promise<User[]> {
   return await userDB.getAllUsers();
@@ -20,7 +21,7 @@ export async function createUser(data: UserParams): Promise<User> {
     throw new ApiError("El username ya está registrado", 400);
   }
 
-  const costFactor = 10;
+ 
   const hashedPassword = await bcrypt.hash(password, costFactor);
   const newUser = await userDB.createUser(username, hashedPassword,name, email);
   return newUser;
@@ -39,8 +40,7 @@ export async function updateUser(
     throw new Error("El nombre de usuario o correo electrónico ya está en uso.");
   }
 
-  // Hashear la contraseña
-  const costFactor = 10;
+
   const hashedPassword = await bcrypt.hash(password, costFactor);
 
   // Actualizar el usuario en la base de datos
